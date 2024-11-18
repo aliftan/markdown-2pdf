@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Markdown to PDF Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Markdown to PDF Converter</h2>
+            </div>
+            <div class="card-body">
+                <form action="/convert" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="markdown_files" class="form-label">Select Multiple Markdown Files</label>
+                        <input class="form-control" type="file" id="markdown_files" name="markdown_files" multiple
+                            accept=".md,.txt">
+                        <div class="form-text">Select multiple files by holding Ctrl while clicking</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Convert to PDF</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
