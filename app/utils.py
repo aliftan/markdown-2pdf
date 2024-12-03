@@ -4,6 +4,7 @@ import os
 from PyPDF2 import PdfMerger
 from lib.markdown2pdf import convert_markdown_to_pdf
 
+
 def merge_pdfs(files):
     merger = PdfMerger()
     temp_files = []
@@ -23,22 +24,13 @@ def merge_pdfs(files):
         merger.write(output.name)
         merger.close()
 
-        return send_file(
-            output.name,
-            mimetype='application/pdf',
-            as_attachment=True,
-            download_name='merged.pdf'
-        )
+        # Return the path instead of send_file
+        return output.name
 
     finally:
-        # Clean up temporary files
+        # Clean up temporary files except the output
         for temp_file in temp_files:
             try:
                 os.unlink(temp_file)
-            except:
-                pass
-        if output:
-            try:
-                os.unlink(output.name)
             except:
                 pass

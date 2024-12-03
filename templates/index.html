@@ -44,7 +44,6 @@
             selectedFiles.splice(index, 1);
             updateFileList();
 
-            // Reset the file input if all files are removed
             if (selectedFiles.length === 0) {
                 document.getElementById('markdown_files').value = '';
             }
@@ -85,6 +84,38 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+
+        // Handle form submission
+        document.querySelector('form').onsubmit = function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            // Show some loading indicator
+            document.getElementById('convertBtn').disabled = true;
+
+            fetch('/convert', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Conversion failed');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Create URL and open in new tab
+                    const url = URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error converting files. Please try again.');
+                })
+                .finally(() => {
+                    document.getElementById('convertBtn').disabled = false;
+                });
+        };
     </script>
 </body>
 

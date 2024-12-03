@@ -44,6 +44,6 @@ class BookTemplate(SimpleDocTemplate):
         self.canv.drawString(
             self.leftMargin,
             0.75*inch,
-            '©ilmugunung.lab | Digital Asset Education - Building Financial Freedom - Generation Wealthy'
+            '©ilmugunung.lab | Digital Asset Education - Building Financial Freedom'
         )
         self.canv.restoreState()
