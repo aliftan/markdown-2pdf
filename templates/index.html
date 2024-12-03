@@ -88,9 +88,14 @@
         // Handle form submission
         document.querySelector('form').onsubmit = function (e) {
             e.preventDefault();
-            const formData = new FormData(this);
+            const formData = new FormData();
 
-            // Show some loading indicator
+            // Add only the selected files to FormData
+            selectedFiles.forEach(file => {
+                formData.append('markdown_files', file);
+            });
+
+            // Show loading indicator
             document.getElementById('convertBtn').disabled = true;
 
             fetch('/convert', {

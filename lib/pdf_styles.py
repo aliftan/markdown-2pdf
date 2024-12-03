@@ -32,7 +32,7 @@ def create_styles():
         spaceAfter=6,  
         spaceBefore=12,
         leading=20,
-        alignment=1
+        alignment=0
     )
     
     h3 = ParagraphStyle(
