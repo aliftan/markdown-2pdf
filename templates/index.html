@@ -17,14 +17,75 @@
                     <div class="mb-3">
                         <label for="markdown_files" class="form-label">Select Multiple Markdown Files</label>
                         <input class="form-control" type="file" id="markdown_files" name="markdown_files" multiple
-                            accept=".md,.txt">
+                            accept=".md,.txt" onchange="showFiles(this)">
                         <div class="form-text">Select multiple files by holding Ctrl while clicking</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Convert to PDF</button>
+
+                    <!-- File Preview Section -->
+                    <div id="fileList" class="mb-3"></div>
+
+                    <button type="submit" class="btn btn-primary" id="convertBtn" disabled>
+                        Convert to PDF
+                    </button>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        let selectedFiles = [];
+
+        function showFiles(input) {
+            selectedFiles = Array.from(input.files);
+            updateFileList();
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFileList();
+
+            // Reset the file input if all files are removed
+            if (selectedFiles.length === 0) {
+                document.getElementById('markdown_files').value = '';
+            }
+        }
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            const convertBtn = document.getElementById('convertBtn');
+
+            if (selectedFiles.length > 0) {
+                let html = '<h5>Selected Files:</h5><div class="list-group">';
+
+                selectedFiles.forEach((file, index) => {
+                    html += `
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>${file.name}</div>
+                            <div class="d-flex align-items-center">
+                                <small class="text-muted me-3">(${formatFileSize(file.size)})</small>
+                                <button type="button" class="btn-close" aria-label="Remove" 
+                                    onclick="removeFile(${index})"></button>
+                            </div>
+                        </div>`;
+                });
+
+                html += '</div>';
+                fileList.innerHTML = html;
+                convertBtn.disabled = false;
+            } else {
+                fileList.innerHTML = '';
+                convertBtn.disabled = true;
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
 </body>
 
 </html>
